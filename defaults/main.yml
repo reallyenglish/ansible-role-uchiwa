@@ -1,8 +1,11 @@
-uchiwa_user: uchiwa
-uchiwa_group: uchiwa
+uchiwa_user: "{{ __uchiwa_user }}"
+uchiwa_group: "{{ __uchiwa_group }}"
 uchiwa_log_dir: /var/log/uchiwa
-uchiwa_db_dir: "{{ __uchiwa_db_dir }}"
-uchiwa_service: uchiwa
+uchiwa_public_dir: "{{ __uchiwa_public_dir }}"
+uchiwa_service: "{{ __uchiwa_service }}"
 uchiwa_conf_dir: "{{ __uchiwa_conf_dir }}"
-uchiwa_conf_file: "{{ __uchiwa_conf_dir }}/uchiwa.conf"
+uchiwa_conf_file: "{{ uchiwa_conf_dir }}/uchiwa.json"
 uchiwa_flags: ""
+uchiwa_config: {}
+uchiwa_config_fragments: {}
+uchiwa_config_fragments_dir: "{{ uchiwa_conf_dir }}/dashboard.d"

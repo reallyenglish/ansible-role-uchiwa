@@ -5,6 +5,22 @@
 
 - include: "install-{{ ansible_os_family }}.yml"
 
+- include: "configure-{{ ansible_os_family }}.yml"
+
+- name: Create uchiwa_log_dir
+  file:
+    path: "{{ uchiwa_log_dir }}"
+    owner: "{{ uchiwa_user }}"
+    group: "{{ uchiwa_group }}"
+    state: directory
+
+- name: Create uchiwa_config_fragments_dir
+  file:
+    path: "{{ uchiwa_config_fragments_dir }}"
+    owner: "{{ uchiwa_user }}"
+    group: "{{ uchiwa_group }}"
+    state: directory
+
 - name: Create log directory
   file:
     path: "{{ uchiwa_log_dir }}"
@@ -14,20 +30,11 @@
     state: directory
   notify: Restart uchiwa
 
-- name: Create db directory
-  file:
-    path: "{{ uchiwa_db_dir }}"
-    mode: 0755
-    owner: "{{ uchiwa_user }}"
-    group: "{{ uchiwa_group }}"
-    state: directory
-  notify: Restart uchiwa
-
-- name: Create uchiwa.conf
+- name: Create uchiwa_conf_file
   template:
-    src: uchiwa.conf.j2
+    src: uchiwa.json.j2
     dest: "{{ uchiwa_conf_file }}"
-    validate: echo %s
+    validate: "python -c 'import sys; import json; json.loads(open(sys.argv[1]).read())' %s"
   notify: Restart uchiwa
 
 - name: Start uchiwa

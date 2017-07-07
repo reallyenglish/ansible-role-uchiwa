@@ -1,0 +1,37 @@
+---
+# tasks file for ansible-role-uchiwa
+
+- include_vars: "{{ ansible_os_family }}.yml"
+
+- include: "install-{{ ansible_os_family }}.yml"
+
+- name: Create log directory
+  file:
+    path: "{{ uchiwa_log_dir }}"
+    mode: 0755
+    owner: "{{ uchiwa_user }}"
+    group: "{{ uchiwa_group }}"
+    state: directory
+  notify: Restart uchiwa
+
+- name: Create db directory
+  file:
+    path: "{{ uchiwa_db_dir }}"
+    mode: 0755
+    owner: "{{ uchiwa_user }}"
+    group: "{{ uchiwa_group }}"
+    state: directory
+  notify: Restart uchiwa
+
+- name: Create uchiwa.conf
+  template:
+    src: uchiwa.conf.j2
+    dest: "{{ uchiwa_conf_file }}"
+    validate: echo %s
+  notify: Restart uchiwa
+
+- name: Start uchiwa
+  service:
+    name: "{{ uchiwa_service }}"
+    enabled: true
+    state: started

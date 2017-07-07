@@ -1,0 +1,5 @@
+- hosts: localhost
+  roles:
+    - ansible-role-uchiwa
+  vars:
+    uchiwa_config: ""

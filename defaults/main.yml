@@ -1,0 +1,8 @@
+uchiwa_user: uchiwa
+uchiwa_group: uchiwa
+uchiwa_log_dir: /var/log/uchiwa
+uchiwa_db_dir: "{{ __uchiwa_db_dir }}"
+uchiwa_service: uchiwa
+uchiwa_conf_dir: "{{ __uchiwa_conf_dir }}"
+uchiwa_conf_file: "{{ __uchiwa_conf_dir }}/uchiwa.conf"
+uchiwa_flags: ""

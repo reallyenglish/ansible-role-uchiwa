@@ -1,0 +1,6 @@
+---
+
+- name: Restart uchiwa
+  service:
+    name: uchiwa
+    state: restarted

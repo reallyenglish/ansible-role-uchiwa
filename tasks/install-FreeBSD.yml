@@ -1,0 +1,6 @@
+---
+
+- name: Install uchiwa
+  pkgng:
+    name: uchiwa
+    state: present

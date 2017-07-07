@@ -8,6 +8,7 @@ user    = "uchiwa"
 group   = "uchiwa"
 ports   = [3000]
 log_dir = "/var/log/uchiwa"
+log_file = "#{log_dir}/uchiwa.log"
 public_dir = "/usr/local/share/uchiwa/public"
 default_user = "root"
 default_group = "root"
@@ -18,7 +19,7 @@ when "freebsd"
   default_group = "wheel"
 end
 
-config  = "#{config_dir}/uchiwa.json"
+config = "#{config_dir}/uchiwa.json"
 
 describe package(package) do
   it { should be_installed }
@@ -57,7 +58,7 @@ when "freebsd"
     its(:content) { should match(/^uchiwa_user="#{user}"$/) }
     its(:content) { should match(/^uchiwa_group="#{group}"$/) }
     its(:content) { should match(/^uchiwa_config="#{Regexp.escape(config)}"$/) }
-    its(:content) { should match(/^uchiwa_logfile="#{Regexp.escape(log_dir)}\/uchiwa\.log"$/) }
+    its(:content) { should match(/^uchiwa_logfile="#{Regexp.escape(log_file)}"$/) }
     its(:content) { should match(/^uchiwa_publicdir="#{Regexp.escape(public_dir)}"$/) }
   end
 end

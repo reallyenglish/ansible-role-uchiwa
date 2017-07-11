@@ -1,5 +1,38 @@
 - hosts: localhost
   roles:
+    - name: reallyenglish.apt-repo
+      when: ansible_os_family == 'Debian'
+    - name: reallyenglish.redhat-repo
+      when: ansible_os_family == 'RedHat'
+    - name: reallyenglish.language-ruby
+      when: ansible_os_family == 'OpenBSD'
     - ansible-role-uchiwa
   vars:
-    uchiwa_config: ""
+    redhat_repo:
+      sensu:
+        baseurl: https://sensu.global.ssl.fastly.net/yum/$releasever/$basearch
+        gpgcheck: no
+        enabled: yes
+    apt_repo_keys_to_add:
+      - https://sensu.global.ssl.fastly.net/apt/pubkey.gpg
+    apt_repo_enable_apt_transport_https: yes
+    apt_repo_to_add:
+      - "deb https://sensu.global.ssl.fastly.net/apt {{ ansible_distribution_release }} main"
+    uchiwa_config:
+      sensu:
+        - name: "Site 1"
+          host: "localhost"
+          port: 4567
+      uchiwa:
+        host: 0.0.0.0
+        port: 3000
+        users:
+          - name: admin
+            password: password
+            # openssl rand -base64 40 |  tr -- '+=/' '-_~'
+            accessToken: vFzX6rFDAn3G9ieuZ4ZhN-XrfdRow4Hd5CXXOUZ5NsTw4h3k3l4jAw__
+            readonly: false
+          - name: guest
+            password: password
+            accessToken: hrKMW3uIt2RGxuMIoXQ-bVp-TL1MP4St5Hap3KAanMxI3OovFV48ww__
+            readonly: true

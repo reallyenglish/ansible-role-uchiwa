@@ -1,2 +1,5 @@
-__uchiwa_db_dir: /var/db/uchiwa
+__uchiwa_user: uchiwa
+__uchiwa_group: uchiwa
+__uchiwa_service: uchiwa
 __uchiwa_conf_dir: /usr/local/etc/uchiwa
+__uchiwa_public_dir: /usr/local/share/uchiwa/public

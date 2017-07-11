@@ -1,0 +1,8 @@
+---
+
+- name: Create rc.conf.d/uchiwa
+  template:
+    dest: /etc/rc.conf.d/uchiwa
+    src: FreeBSD.rcd.j2
+  notify:
+    - Restart uchiwa

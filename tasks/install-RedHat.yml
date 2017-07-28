@@ -1,0 +1,6 @@
+---
+
+- name: Install uchiwa
+  yum:
+    name: uchiwa
+    state: present

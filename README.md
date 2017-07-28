@@ -17,7 +17,8 @@ None
 | `uchiwa_service` | name of `uchiwa` service | `{{ __uchiwa_service }}` |
 | `uchiwa_conf_dir` | path to configuration directory | `{{ __uchiwa_conf_dir }}` |
 | `uchiwa_conf_file` | path to `uchiwa.json` | `{{ uchiwa_conf_dir }}/uchiwa.json` |
-| `uchiwa_flags` | not yet used | `""` |
+| `uchiwa_flags` | dict of variables used in start-up scripts, such as `/etc/default/uchiwa` (see below) | `{}` |
+| `uchiwa_flags_default` | default of `uchiwa_flags` | `{{ __uchiwa_flags_default }}` |
 | `uchiwa_config` | YAML representation of `uchiwa.json` | `{}` |
 | `uchiwa_config_fragments` | YAML representation of optional files under `uchiwa_config_fragments_dir` | `{}` |
 | `uchiwa_config_fragments_dir` | | `{{ uchiwa_conf_dir }}/dashboard.d` |
@@ -28,6 +29,27 @@ None
 | `uchiwa_publickey_mode` | file mode of `publickey` | `0444` |
 | `uchiwa_publickey_path` | path to `publickey` file | `{{ uchiwa_conf_dir }}/keys/uchiwa.rsa.pub` |
 
+## `uchiwa_flags`
+
+This variable is a dict. Keys and values are explained below. Each pair is used
+in the start-up script of the platform. Keys and values depend on the start-up
+script.
+
+| Key | Value |
+|-----|-------|
+| name of variable | value of the variable |
+
+## Debian
+
+| Variable | Default |
+|----------|---------|
+| `__uchiwa_user` | `uchiwa` |
+| `__uchiwa_group` | `uchiwa` |
+| `__uchiwa_service` | `uchiwa` |
+| `__uchiwa_conf_dir` | `/etc/sensu` |
+| `__uchiwa_public_dir` | `/opt/uchiwa/src/public` |
+| `__uchiwa_flags_default` | `{}` |
+
 ## FreeBSD
 
 | Variable | Default |
@@ -37,6 +59,18 @@ None
 | `__uchiwa_service` | `uchiwa` |
 | `__uchiwa_conf_dir` | `/usr/local/etc/uchiwa` |
 | `__uchiwa_public_dir` | `/usr/local/share/uchiwa/public` |
+| `__uchiwa_flags_default` | `{"uchiwa_user"=>"{{ uchiwa_user }}", "uchiwa_group"=>"{{ uchiwa_group }}", "uchiwa_config"=>"{{ uchiwa_conf_file }}", "uchiwa_logfile"=>"{{ uchiwa_log_dir }}/uchiwa.log", "uchiwa_publicdir"=>"{{ uchiwa_public_dir }}"}` |
+
+## RedHat
+
+| Variable | Default |
+|----------|---------|
+| `__uchiwa_user` | `uchiwa` |
+| `__uchiwa_group` | `uchiwa` |
+| `__uchiwa_service` | `uchiwa` |
+| `__uchiwa_conf_dir` | `/etc/sensu` |
+| `__uchiwa_public_dir` | `/opt/uchiwa/src/public` |
+| `__uchiwa_flags_default` | `{}` |
 
 # Dependencies
 
@@ -88,6 +122,8 @@ None
           publickey: "{{ uchiwa_publickey_path }}"
     # openssl genrsa -out uchiwa.rsa 2048
     # openssl rsa -in uchiwa.rsa -pubout > uchiwa.rsa.pub
+    uchiwa_flags:
+      "# foo": bar
     uchiwa_publickey: |
       -----BEGIN PUBLIC KEY-----
       MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwU+ZfaKjXxFQq8WNUgai

@@ -3,6 +3,9 @@
 
 - include_vars: "{{ ansible_os_family }}.yml"
 
+- set_fact:
+    uchiwa_flags_merged: "{{ uchiwa_flags_default | combine(uchiwa_flags) }}"
+
 - assert:
     that:
       - uchiwa_publickey_path is defined

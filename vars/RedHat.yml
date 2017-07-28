@@ -1,0 +1,6 @@
+__uchiwa_user: uchiwa
+__uchiwa_group: uchiwa
+__uchiwa_service: uchiwa
+__uchiwa_conf_dir: /etc/sensu
+__uchiwa_public_dir: /opt/uchiwa/src/public
+__uchiwa_flags_default: {}

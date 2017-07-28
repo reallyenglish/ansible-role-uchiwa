@@ -1,0 +1,10 @@
+---
+
+- name: Create /etc/default/uchiwa
+  template:
+    dest: /etc/default/uchiwa
+    src: Debian.default.j2
+    validate: sh -n %s
+    backup: yes
+  notify:
+    - Restart uchiwa

@@ -3,3 +3,9 @@ __uchiwa_group: uchiwa
 __uchiwa_service: uchiwa
 __uchiwa_conf_dir: /usr/local/etc/uchiwa
 __uchiwa_public_dir: /usr/local/share/uchiwa/public
+__uchiwa_flags_default:
+  uchiwa_user: "{{ uchiwa_user }}"
+  uchiwa_group: "{{ uchiwa_group }}"
+  uchiwa_config: "{{ uchiwa_conf_file }}"
+  uchiwa_logfile: "{{ uchiwa_log_dir }}/uchiwa.log"
+  uchiwa_publicdir: "{{ uchiwa_public_dir }}"

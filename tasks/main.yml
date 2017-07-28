@@ -3,6 +3,30 @@
 
 - include_vars: "{{ ansible_os_family }}.yml"
 
+- assert:
+    that:
+      - uchiwa_publickey_path is defined
+      - uchiwa_publickey_path | length > 0
+      - "'uchiwa' in uchiwa_config"
+      - "'auth' in uchiwa_config.uchiwa"
+      - "'publickey' in uchiwa_config.uchiwa.auth"
+      - uchiwa_config.uchiwa.auth.publickey | length > 0
+  when:
+    - uchiwa_publickey is defined
+    - uchiwa_publickey | length > 0
+
+- assert:
+    that:
+      - uchiwa_privatekey_path is defined
+      - uchiwa_privatekey_path | length > 0
+      - "'uchiwa' in uchiwa_config"
+      - "'auth' in uchiwa_config.uchiwa"
+      - "'privatekey' in uchiwa_config.uchiwa.auth"
+      - uchiwa_config.uchiwa.auth.privatekey | length > 0
+  when:
+    - uchiwa_publickey is defined
+    - uchiwa_publickey | length > 0
+
 - include: "install-{{ ansible_os_family }}.yml"
 
 - include: "configure-{{ ansible_os_family }}.yml"
@@ -29,6 +53,55 @@
     group: "{{ uchiwa_group }}"
     state: directory
   notify: Restart uchiwa
+
+- block:
+  - name: Create directory for publickey
+    file:
+      path: "{{ uchiwa_publickey_path | dirname }}"
+      owner: "{{ uchiwa_user }}"
+      group: "{{ uchiwa_group }}"
+      state: directory
+      mode: 0755
+
+  - name: Create publickey
+    copy:
+      dest: "{{ uchiwa_publickey_path }}"
+      mode: "{{ uchiwa_publickey_mode }}"
+      owner: "{{ uchiwa_user }}"
+      group: "{{ uchiwa_group }}"
+      content: "{{ uchiwa_publickey }}"
+    notify: Restart uchiwa
+  when:
+    - "'uchiwa' in uchiwa_config"
+    - "'auth' in uchiwa_config.uchiwa"
+    - "'publickey' in uchiwa_config.uchiwa.auth"
+    - uchiwa_config.uchiwa.auth.publickey | length > 0
+    - uchiwa_publickey is defined
+    - uchiwa_publickey | length > 0
+
+- block:
+  - name: Create directory for privatekey
+    file:
+      path: "{{ uchiwa_privatekey_path | dirname }}"
+      owner: "{{ uchiwa_user }}"
+      group: "{{ uchiwa_group }}"
+      state: directory
+      mode: 0755
+  - name: Create privatekey
+    copy:
+      dest: "{{ uchiwa_privatekey_path }}"
+      mode: "{{ uchiwa_privatekey_mode }}"
+      owner: "{{ uchiwa_user }}"
+      group: "{{ uchiwa_group }}"
+      content: "{{ uchiwa_privatekey }}"
+    notify: Restart uchiwa
+  when:
+    - "'uchiwa' in uchiwa_config"
+    - "'auth' in uchiwa_config.uchiwa"
+    - "'privatekey' in uchiwa_config.uchiwa.auth"
+    - uchiwa_config.uchiwa.auth.privatekey | length > 0
+    - uchiwa_privatekey is defined
+    - uchiwa_privatekey | length > 0
 
 - name: Create uchiwa_conf_file
   template:

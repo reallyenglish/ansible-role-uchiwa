@@ -21,7 +21,12 @@ None
 | `uchiwa_config` | YAML representation of `uchiwa.json` | `{}` |
 | `uchiwa_config_fragments` | YAML representation of optional files under `uchiwa_config_fragments_dir` | `{}` |
 | `uchiwa_config_fragments_dir` | | `{{ uchiwa_conf_dir }}/dashboard.d` |
-
+| `uchiwa_privatekey` | content of `privatekey` | `""` |
+| `uchiwa_privatekey_mode` | file mode of `privatekey` | `0400` |
+| `uchiwa_privatekey_path` | path to `privatekey` file | `{{ uchiwa_conf_dir }}/keys/uchiwa.rsa` |
+| `uchiwa_publickey` | content of `publickey` | `""` |
+| `uchiwa_publickey_mode` | file mode of `publickey` | `0444` |
+| `uchiwa_publickey_path` | path to `publickey` file | `{{ uchiwa_conf_dir }}/keys/uchiwa.rsa.pub` |
 
 ## FreeBSD
 
@@ -78,6 +83,51 @@ None
             password: password
             accessToken: hrKMW3uIt2RGxuMIoXQ-bVp-TL1MP4St5Hap3KAanMxI3OovFV48ww__
             readonly: true
+        auth:
+          privatekey: "{{ uchiwa_privatekey_path }}"
+          publickey: "{{ uchiwa_publickey_path }}"
+    # openssl genrsa -out uchiwa.rsa 2048
+    # openssl rsa -in uchiwa.rsa -pubout > uchiwa.rsa.pub
+    uchiwa_publickey: |
+      -----BEGIN PUBLIC KEY-----
+      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwU+ZfaKjXxFQq8WNUgai
+      IKOo7JN/03P5d0ZrVLSDXeQ5F5MGjtKatobgNiA385ISVAt6d2QoZR8QQhxAwcKS
+      ycPXlNvrGRNLzwUmzWD/ccFkXGxs3DvnyFF+ZuRNT/fDxavRhv4fUMO1z75Bn6s1
+      dba500FZuWJyHXp318O0+hO6VN6nnU16c6kudNUoCIrHVxLshW65TXBcsX556vS6
+      f74koZC04Z5kGY/ha/T7lJjDWTlNreI4mv+sbfaJ2kyia47u4xnsup9dkd+BSjfU
+      ECkXhEBkp7UpYeGfxcCCROZGyP5obcRcjPABK1qHMhatqD7oVicXedPs3RyvzvDJ
+      KwIDAQAB
+      -----END PUBLIC KEY-----
+    uchiwa_privatekey_path: "{{ uchiwa_conf_dir }}/privatekeys/uchiwa.rsa"
+    uchiwa_privatekey_mode: 0440
+    uchiwa_privatekey: |
+      -----BEGIN RSA PRIVATE KEY-----
+      MIIEowIBAAKCAQEAwU+ZfaKjXxFQq8WNUgaiIKOo7JN/03P5d0ZrVLSDXeQ5F5MG
+      jtKatobgNiA385ISVAt6d2QoZR8QQhxAwcKSycPXlNvrGRNLzwUmzWD/ccFkXGxs
+      3DvnyFF+ZuRNT/fDxavRhv4fUMO1z75Bn6s1dba500FZuWJyHXp318O0+hO6VN6n
+      nU16c6kudNUoCIrHVxLshW65TXBcsX556vS6f74koZC04Z5kGY/ha/T7lJjDWTlN
+      reI4mv+sbfaJ2kyia47u4xnsup9dkd+BSjfUECkXhEBkp7UpYeGfxcCCROZGyP5o
+      bcRcjPABK1qHMhatqD7oVicXedPs3RyvzvDJKwIDAQABAoIBACpi68LygGP+BfRE
+      EuKjdbU2bXnCNcsFqPOQS0R9eDiELEiRAmUapLXVCSCVG++aXc5z3dyD55+UmhoE
+      2+YgZdM7z+9h8UDETGEOPh3WYOxufTUOySfZMs9nnxGsiY85QoH7VKwG2JL69sig
+      bP83qTcwY7qAn83YWjFAgzqaPPqAKo3ZiLl1OJyK6SplJy/mL130q4i381CgvItZ
+      DBG42g2jhljcOkjrEAXql1eswYgv//wKIeWoYXwlP5gn4yG5gNzy1jSUvtw/SeRG
+      LXPrHT6y1HJBRCJk0AjjPtgL3cNep92Qy9Gj0C8hbtL5rdleK6NWLOmgT97MAzc8
+      0VeU/FECgYEA/DOL/WQuLMWb3RRP0oRAVX76WLtY/0ZB8Q9TgeugaxQO4SHofSQC
+      6Q7ty69qlxHF84b4bz538Ad6N8w6fPyT09r2dKFjcosStFm4NyD2X5FFoHn0kh/H
+      Uv8nVzWP2tgAqurKAHYMwShFXsnY3uikkMzDfnajn3PYOgyvwS81xCcCgYEAxDj6
+      wYsAIEqwZo2xl/uyiEnTW5OUmo6AmPP7KfjmShpijZDtY+/SQzE1kd2srr8nLhjV
+      e1o/AjKzvkoF9YkXAGcgva25saTEz6LT672ShxkFitS/7tO7fCQINefl3tfivIlb
+      wJtV8us2IC6wfvAM3t7MicPqDlNfiG2WgHMUoV0CgYEA3bNGjXJicPMph9fSL6IY
+      l8+urQ/MNWOCljE93IjQlTClv9y57kAY2t1HxvUmQzTZibGNdOU6M+Ou2ZwLklHK
+      dcMXQgGZVVjSEX6JRNUSH4Kp7V8n0shixSANaklocx3MwHLzLiKYJbiL+r5/ibyC
+      5dNKy0HppkMEwkriuXUR06MCgYAyznIW9O+2bMBZ/WwzZwdmBH+GYaMDlcw0TlAF
+      IR43p7dG4nSlAK6XmUE+oIAaywHRDLsR8l8IKaqipbX/Sly7TPiMRFQla/1NqeJn
+      UrGC63ak6Ms9gnM0BHxfwMijN5DMsmAgcdgCSua71Hr8kxkyB8w8C48p4GqG/6EN
+      Zz67PQKBgHsqw8SmNevT5tDezXG8B0Vs9xbO3SDJj5IDbI2yQ+4i7k3MznngPjYx
+      63qvMaG1nnUqeaagGCbq5POFhVPJOFr2hl8eU6hb3iwxjcH5gHnLRGbMq8YNVDDv
+      62ifBFXVQ8mMOCCtEwyQSGjeXiEGjDommzQN/xT4O3rDztgGMH6+
+      -----END RSA PRIVATE KEY-----
 ```
 
 # License

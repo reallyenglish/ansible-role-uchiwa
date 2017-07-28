@@ -4,5 +4,6 @@
   template:
     dest: /etc/rc.conf.d/uchiwa
     src: FreeBSD.rcd.j2
+    validate: sh -n %s
   notify:
     - Restart uchiwa

@@ -21,7 +21,12 @@ None
 | `uchiwa_config` | YAML representation of `uchiwa.json` | `{}` |
 | `uchiwa_config_fragments` | YAML representation of optional files under `uchiwa_config_fragments_dir` | `{}` |
 | `uchiwa_config_fragments_dir` | | `{{ uchiwa_conf_dir }}/dashboard.d` |
-
+| `uchiwa_privatekey` | content of `privatekey` | `""` |
+| `uchiwa_privatekey_mode` | file mode of `privatekey` | `0400` |
+| `uchiwa_privatekey_path` | path to `privatekey` file | `{{ uchiwa_conf_dir }}/keys/uchiwa.rsa` |
+| `uchiwa_publickey` | content of `publickey` | `""` |
+| `uchiwa_publickey_mode` | file mode of `publickey` | `0444` |
+| `uchiwa_publickey_path` | path to `publickey` file | `{{ uchiwa_conf_dir }}/keys/uchiwa.rsa.pub` |
 
 ## FreeBSD
 

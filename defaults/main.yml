@@ -9,3 +9,9 @@ uchiwa_flags: ""
 uchiwa_config: {}
 uchiwa_config_fragments: {}
 uchiwa_config_fragments_dir: "{{ uchiwa_conf_dir }}/dashboard.d"
+uchiwa_privatekey: ""
+uchiwa_privatekey_mode: 0400
+uchiwa_privatekey_path: "{{ uchiwa_conf_dir }}/keys/uchiwa.rsa"
+uchiwa_publickey: ""
+uchiwa_publickey_mode: 0444
+uchiwa_publickey_path: "{{ uchiwa_conf_dir }}/keys/uchiwa.rsa.pub"

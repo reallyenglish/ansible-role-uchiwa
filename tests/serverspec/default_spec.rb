@@ -20,6 +20,8 @@ when "freebsd"
 end
 
 config = "#{config_dir}/uchiwa.json"
+private_key_path = "#{config_dir}/privatekeys/uchiwa.rsa"
+public_key_path = "#{config_dir}/keys/uchiwa.rsa.pub"
 
 describe package(package) do
   it { should be_installed }
@@ -37,6 +39,38 @@ describe file(config) do
   its(:content_as_json) { should include("uchiwa" => include("port" => 3000)) }
   its(:content_as_json) { should include("uchiwa" => include("users" => include("name" => "admin", "password" => "password", "accessToken" => "vFzX6rFDAn3G9ieuZ4ZhN-XrfdRow4Hd5CXXOUZ5NsTw4h3k3l4jAw__", "readonly" => false))) }
   its(:content_as_json) { should include("uchiwa" => include("users" => include("name" => "guest", "password" => "password", "accessToken" => "hrKMW3uIt2RGxuMIoXQ-bVp-TL1MP4St5Hap3KAanMxI3OovFV48ww__", "readonly" => true))) }
+end
+
+[public_key_path, private_key_path].each do |f|
+  describe file(File.dirname(f)) do
+    it { should exist }
+    it { should be_directory }
+    it { should be_mode 755 }
+    it { should be_owned_by user }
+    it { should be_grouped_into group }
+  end
+end
+
+describe file(private_key_path) do
+  it { should exist }
+  it { should be_file }
+  it { should be_mode 440 }
+  it { should be_owned_by user }
+  it { should be_grouped_into group }
+  its(:content) { should match(/^-----BEGIN RSA PRIVATE KEY-----$/) }
+  its(:content) { should match(/^#{Regexp.escape("MIIEowIBAAKCAQEAwU+ZfaKjXxFQq8WNUgaiIKOo7JN/03P5d0ZrVLSDXeQ5F5MG")}$/) }
+  its(:content) { should match(/^-----END RSA PRIVATE KEY-----$/) }
+end
+
+describe file(public_key_path) do
+  it { should exist }
+  it { should be_file }
+  it { should be_mode 444 }
+  it { should be_owned_by user }
+  it { should be_grouped_into group }
+  its(:content) { should match(/^-----BEGIN PUBLIC KEY-----$/) }
+  its(:content) { should match(/^#{Regexp.escape("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwU+ZfaKjXxFQq8WNUgai")}$/) }
+  its(:content) { should match(/^-----END PUBLIC KEY-----$/) }
 end
 
 describe file(log_dir) do

@@ -28,6 +28,7 @@ None
 | `uchiwa_publickey` | content of `publickey` | `""` |
 | `uchiwa_publickey_mode` | file mode of `publickey` | `0444` |
 | `uchiwa_publickey_path` | path to `publickey` file | `{{ uchiwa_conf_dir }}/keys/uchiwa.rsa.pub` |
+<<<<<<< HEAD
 
 ## `uchiwa_flags`
 
@@ -49,6 +50,8 @@ script.
 | `__uchiwa_conf_dir` | `/etc/sensu` |
 | `__uchiwa_public_dir` | `/opt/uchiwa/src/public` |
 | `__uchiwa_flags_default` | `{}` |
+=======
+>>>>>>> master
 
 ## FreeBSD
 

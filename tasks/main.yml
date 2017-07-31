@@ -75,10 +75,6 @@
       content: "{{ uchiwa_publickey }}"
     notify: Restart uchiwa
   when:
-    - "'uchiwa' in uchiwa_config"
-    - "'auth' in uchiwa_config.uchiwa"
-    - "'publickey' in uchiwa_config.uchiwa.auth"
-    - uchiwa_config.uchiwa.auth.publickey | length > 0
     - uchiwa_publickey is defined
     - uchiwa_publickey | length > 0
 
@@ -99,10 +95,6 @@
       content: "{{ uchiwa_privatekey }}"
     notify: Restart uchiwa
   when:
-    - "'uchiwa' in uchiwa_config"
-    - "'auth' in uchiwa_config.uchiwa"
-    - "'privatekey' in uchiwa_config.uchiwa.auth"
-    - uchiwa_config.uchiwa.auth.privatekey | length > 0
     - uchiwa_privatekey is defined
     - uchiwa_privatekey | length > 0
 

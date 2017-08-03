@@ -1,5 +1,8 @@
 source "https://rubygems.org"
 
+# XXX workaround checksum mismatch
+# https://github.com/lostisland/faraday_middleware/issues/165
+gem "faraday_middleware", "= 0.12.0"
 gem "infrataster", "~> 0.3.2", git: "https://github.com/trombik/infrataster.git", branch: "reallyenglish"
 gem "kitchen-ansible", "~> 0.40.1", git: "https://github.com/trombik/kitchen-ansible.git", branch: "freebsd_support" # use patched kitchen-ansible
 gem "kitchen-sync", "~> 2.1.1", git: "https://github.com/trombik/kitchen-sync.git", branch: "without_full_path_to_rsync"

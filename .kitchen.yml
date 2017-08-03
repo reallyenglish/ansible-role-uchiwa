@@ -57,7 +57,9 @@ suites:
     verifier:
       name: shell
       command: rspec -c -f d -I tests/serverspec tests/serverspec/default_spec.rb
-    excludes: centos-7.3-x86_64
+    excludes:
+      - freebsd-10.3-amd64
+      - centos-7.3-x86_64
 
   - name: x509
     provisioner:
@@ -66,4 +68,6 @@ suites:
     verifier:
       name: shell
       command: rspec -c -f d -I tests/serverspec tests/serverspec/x509_spec.rb
-    includes: centos-7.3-x86_64
+    includes:
+      - freebsd-10.3-amd64
+      - centos-7.3-x86_64

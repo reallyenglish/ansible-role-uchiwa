@@ -68,6 +68,7 @@ Known supported platforms:
 | platform | `ansible version` |
 |----------|-------------------|
 | CentOS   | 2.3.1.0           |
+| FreeBSD  | 2.3.1.0           |
 
 ## Debian
 

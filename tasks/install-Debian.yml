@@ -1,0 +1,6 @@
+---
+
+- name: Install uchiwa
+  apt:
+    name: uchiwa
+    state: present

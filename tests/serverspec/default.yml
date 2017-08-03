@@ -41,6 +41,8 @@
           publickey: "{{ uchiwa_publickey_path }}"
     # openssl genrsa -out uchiwa.rsa 2048
     # openssl rsa -in uchiwa.rsa -pubout > uchiwa.rsa.pub
+    uchiwa_flags:
+      "# foo": bar
     uchiwa_publickey: |
       -----BEGIN PUBLIC KEY-----
       MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwU+ZfaKjXxFQq8WNUgai

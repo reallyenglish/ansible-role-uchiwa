@@ -17,7 +17,8 @@ None
 | `uchiwa_service` | name of `uchiwa` service | `{{ __uchiwa_service }}` |
 | `uchiwa_conf_dir` | path to configuration directory | `{{ __uchiwa_conf_dir }}` |
 | `uchiwa_conf_file` | path to `uchiwa.json` | `{{ uchiwa_conf_dir }}/uchiwa.json` |
-| `uchiwa_flags` | not yet used | `""` |
+| `uchiwa_flags` | dict of variables used in start-up scripts, such as `/etc/default/uchiwa` (see below) | `{}` |
+| `uchiwa_flags_default` | default of `uchiwa_flags` | `{{ __uchiwa_flags_default }}` |
 | `uchiwa_config` | YAML representation of `uchiwa.json` | `{}` |
 | `uchiwa_config_fragments` | YAML representation of optional files under `uchiwa_config_fragments_dir` | `{}` |
 | `uchiwa_config_fragments_dir` | | `{{ uchiwa_conf_dir }}/dashboard.d` |
@@ -28,6 +29,43 @@ None
 | `uchiwa_publickey_mode` | file mode of `publickey` | `0444` |
 | `uchiwa_publickey_path` | path to `publickey` file | `{{ uchiwa_conf_dir }}/keys/uchiwa.rsa.pub` |
 
+## `uchiwa_flags`
+
+This variable is a dict of variables of startup configuration files, such as
+files under `/etc/default`, `/etc/sysconfig`, and `/etc/rc.conf.d`. It is
+assumed that the files are `source`d by startup mechanism with `sh(1)`. A key
+in the dict is name of the variable in the file, and the value of the key is
+value of the variable. The variable is combined with a variable whose name is
+same as this variable, but postfixed with `_default` (explained below) and the
+result creates the startup configuration file, usually a file consisting of
+lines of `key="value"` under appropriate directory for the platform.
+
+When the platform is OpenBSD, the above explanation does not apply. In this
+case, the only valid key is `flags` and the value of it is passed to
+`daemon_flags` described in [`rc.conf(5)`](http://man.openbsd.org/rc.conf),
+where `daemon` is the name of one of the `rc.d(8)` daemon control scripts.
+
+## `uchiwa_flags_default`
+
+This variable is a dict of keys and values derived from upstream's default
+configuration, and is supposed to be a constant unless absolutely necessary. By
+default, the role creates a startup configuration file for each platform with
+this variable, identical to default one.
+
+When the platform is OpenBSD, the variable has a single key, `flags` and its
+value is empty string.
+
+## Debian
+
+| Variable | Default |
+|----------|---------|
+| `__uchiwa_user` | `uchiwa` |
+| `__uchiwa_group` | `uchiwa` |
+| `__uchiwa_service` | `uchiwa` |
+| `__uchiwa_conf_dir` | `/etc/sensu` |
+| `__uchiwa_public_dir` | `/opt/uchiwa/src/public` |
+| `__uchiwa_flags_default` | `{}` |
+
 ## FreeBSD
 
 | Variable | Default |
@@ -37,6 +75,18 @@ None
 | `__uchiwa_service` | `uchiwa` |
 | `__uchiwa_conf_dir` | `/usr/local/etc/uchiwa` |
 | `__uchiwa_public_dir` | `/usr/local/share/uchiwa/public` |
+| `__uchiwa_flags_default` | `{"uchiwa_user"=>"{{ uchiwa_user }}", "uchiwa_group"=>"{{ uchiwa_group }}", "uchiwa_config"=>"{{ uchiwa_conf_file }}", "uchiwa_logfile"=>"{{ uchiwa_log_dir }}/uchiwa.log", "uchiwa_publicdir"=>"{{ uchiwa_public_dir }}"}` |
+
+## RedHat
+
+| Variable | Default |
+|----------|---------|
+| `__uchiwa_user` | `uchiwa` |
+| `__uchiwa_group` | `uchiwa` |
+| `__uchiwa_service` | `uchiwa` |
+| `__uchiwa_conf_dir` | `/etc/sensu` |
+| `__uchiwa_public_dir` | `/opt/uchiwa/src/public` |
+| `__uchiwa_flags_default` | `{}` |
 
 # Dependencies
 
@@ -88,6 +138,8 @@ None
           publickey: "{{ uchiwa_publickey_path }}"
     # openssl genrsa -out uchiwa.rsa 2048
     # openssl rsa -in uchiwa.rsa -pubout > uchiwa.rsa.pub
+    uchiwa_flags:
+      "# foo": bar
     uchiwa_publickey: |
       -----BEGIN PUBLIC KEY-----
       MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwU+ZfaKjXxFQq8WNUgai

@@ -5,7 +5,8 @@ uchiwa_public_dir: "{{ __uchiwa_public_dir }}"
 uchiwa_service: "{{ __uchiwa_service }}"
 uchiwa_conf_dir: "{{ __uchiwa_conf_dir }}"
 uchiwa_conf_file: "{{ uchiwa_conf_dir }}/uchiwa.json"
-uchiwa_flags: ""
+uchiwa_flags: {}
+uchiwa_flags_default: "{{ __uchiwa_flags_default }}"
 uchiwa_config: {}
 uchiwa_config_fragments: {}
 uchiwa_config_fragments_dir: "{{ uchiwa_conf_dir }}/dashboard.d"

@@ -1,0 +1,10 @@
+---
+
+- name: Create /etc/sysconfig/uchiwa
+  template:
+    dest: /etc/sysconfig/uchiwa
+    src: RedHat.sysconfig.j2
+    validate: sh -n %s
+    backup: yes
+  notify:
+    - Restart uchiwa

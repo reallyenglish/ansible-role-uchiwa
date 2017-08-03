@@ -3,13 +3,13 @@ require "serverspec"
 
 package = "uchiwa"
 service = "uchiwa"
-config_dir = "/etc/uchiwa"
+config_dir = "/etc/sensu"
 user    = "uchiwa"
 group   = "uchiwa"
 ports   = [3000]
 log_dir = "/var/log/uchiwa"
 log_file = "#{log_dir}/uchiwa.log"
-public_dir = "/usr/local/share/uchiwa/public"
+public_dir = "/opt/uchiwa/src/public"
 default_user = "root"
 default_group = "root"
 
@@ -17,6 +17,7 @@ case os[:family]
 when "freebsd"
   config_dir = "/usr/local/etc/uchiwa"
   default_group = "wheel"
+  public_dir = "/usr/local/share/uchiwa/public"
 end
 
 config = "#{config_dir}/uchiwa.json"
@@ -30,9 +31,9 @@ end
 describe file(config) do
   it { should exist }
   it { should be_file }
-  it { should be_mode 644 }
-  it { should be_owned_by default_user }
-  it { should be_grouped_into default_group }
+  it { should be_mode os[:family] == "freebsd" ? 644 : 664 }
+  it { should be_owned_by os[:family] == "redhat" ? user : default_user }
+  it { should be_grouped_into os[:family] == "redhat" ? user : default_group }
   its(:content_as_json) { should include("sensu") }
   its(:content_as_json) { should include("sensu" => include("name" => "Site 1", "host" => "localhost", "port" => 4567)) }
   its(:content_as_json) { should include("uchiwa" => include("host" => "0.0.0.0")) }
@@ -82,6 +83,24 @@ describe file(log_dir) do
 end
 
 case os[:family]
+when "redhat"
+  describe file("/etc/sysconfig/uchiwa") do
+    it { should exist }
+    it { should be_file }
+    it { should be_mode 644 }
+    it { should be_owned_by default_user }
+    it { should be_grouped_into default_group }
+    its(:content) { should match(/^# foo="bar"$/) }
+  end
+when "ubuntu"
+  describe file("/etc/default/uchiwa") do
+    it { should exist }
+    it { should be_file }
+    it { should be_mode 664 }
+    it { should be_owned_by default_user }
+    it { should be_grouped_into default_group }
+    its(:content) { should match(/^# foo="bar"$/) }
+  end
 when "freebsd"
   describe file("/etc/rc.conf.d/uchiwa") do
     it { should exist }
@@ -89,6 +108,7 @@ when "freebsd"
     it { should be_mode 644 }
     it { should be_owned_by default_user }
     it { should be_grouped_into default_group }
+    its(:content) { should match(/^# foo="bar"$/) }
     its(:content) { should match(/^uchiwa_user="#{user}"$/) }
     its(:content) { should match(/^uchiwa_group="#{group}"$/) }
     its(:content) { should match(/^uchiwa_config="#{Regexp.escape(config)}"$/) }

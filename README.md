@@ -69,6 +69,7 @@ Known supported platforms:
 |----------|-------------------|
 | CentOS   | 2.3.1.0           |
 | FreeBSD  | 2.3.1.0           |
+| Ubuntu   | 2.3.1.0-1ppa~xenial |
 
 ## Debian
 

@@ -28,6 +28,7 @@ None
 | `uchiwa_publickey` | content of `publickey` | `""` |
 | `uchiwa_publickey_mode` | file mode of `publickey` | `0444` |
 | `uchiwa_publickey_path` | path to `publickey` file | `{{ uchiwa_conf_dir }}/keys/uchiwa.rsa.pub` |
+| `uchiwa_include_role_x509_certificate` | include and execute `reallyenglish.x509-certificate` during the play when `yes` (see below) | `no` |
 
 ## `uchiwa_flags`
 
@@ -54,6 +55,19 @@ this variable, identical to default one.
 
 When the platform is OpenBSD, the variable has a single key, `flags` and its
 value is empty string.
+
+## `uchiwa_include_role_x509_certificate`
+
+When `yes`, this variable includes and execute
+[`reallyenglish.x509`](https://github.com/reallyenglish/ansible-role-x509-certificate)
+during the play, which makes it possible to manage certificates without ugly
+hacks. This is only supported in `ansible` version _at least_ 2.2 and later.
+
+Known supported platforms:
+
+| platform | `ansible version` |
+|----------|-------------------|
+| CentOS   | 2.3.1.0           |
 
 ## Debian
 

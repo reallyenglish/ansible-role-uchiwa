@@ -49,6 +49,7 @@ platforms:
       box_check_update: false
 
 suites:
+  # XXX this suite should be replaced with x509
   - name: default
     provisioner:
       name: ansible_playbook
@@ -56,3 +57,13 @@ suites:
     verifier:
       name: shell
       command: rspec -c -f d -I tests/serverspec tests/serverspec/default_spec.rb
+    excludes: centos-7.3-x86_64
+
+  - name: x509
+    provisioner:
+      name: ansible_playbook
+      playbook: tests/serverspec/x509.yml
+    verifier:
+      name: shell
+      command: rspec -c -f d -I tests/serverspec tests/serverspec/x509_spec.rb
+    includes: centos-7.3-x86_64

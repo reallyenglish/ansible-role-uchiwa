@@ -16,3 +16,4 @@ uchiwa_privatekey_path: "{{ uchiwa_conf_dir }}/keys/uchiwa.rsa"
 uchiwa_publickey: ""
 uchiwa_publickey_mode: 0444
 uchiwa_publickey_path: "{{ uchiwa_conf_dir }}/keys/uchiwa.rsa.pub"
+uchiwa_include_role_x509_certificate: no

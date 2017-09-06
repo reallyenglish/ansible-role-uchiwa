@@ -3,6 +3,13 @@
 
 - include_vars: "{{ ansible_os_family }}.yml"
 
+- assert:
+    msg: ansible version must be 2.2 or later when uchiwa_include_role_x509_certificate is yes
+    that:
+      - ansible_version.full | version_compare('2.2', '>=')
+  when:
+    - uchiwa_include_role_x509_certificate
+
 - set_fact:
     uchiwa_flags_merged: "{{ uchiwa_flags_default | combine(uchiwa_flags) }}"
 

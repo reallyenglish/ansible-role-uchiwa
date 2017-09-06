@@ -38,8 +38,8 @@ describe file(config) do
   its(:content_as_json) { should include("sensu" => include("name" => "Site 1", "host" => "localhost", "port" => 4567)) }
   its(:content_as_json) { should include("uchiwa" => include("host" => "0.0.0.0")) }
   its(:content_as_json) { should include("uchiwa" => include("port" => 3000)) }
-  its(:content_as_json) { should include("uchiwa" => include("users" => include("name" => "admin", "password" => "password", "accessToken" => "vFzX6rFDAn3G9ieuZ4ZhN-XrfdRow4Hd5CXXOUZ5NsTw4h3k3l4jAw__", "readonly" => false))) }
-  its(:content_as_json) { should include("uchiwa" => include("users" => include("name" => "guest", "password" => "password", "accessToken" => "hrKMW3uIt2RGxuMIoXQ-bVp-TL1MP4St5Hap3KAanMxI3OovFV48ww__", "readonly" => true))) }
+  its(:content_as_json) { should include("uchiwa" => include("users" => include("username" => "admin", "password" => "password", "accessToken" => "vFzX6rFDAn3G9ieuZ4ZhN-XrfdRow4Hd5CXXOUZ5NsTw4h3k3l4jAw__", "readonly" => false))) }
+  its(:content_as_json) { should include("uchiwa" => include("users" => include("username" => "guest", "password" => "password", "accessToken" => "hrKMW3uIt2RGxuMIoXQ-bVp-TL1MP4St5Hap3KAanMxI3OovFV48ww__", "readonly" => true))) }
 end
 
 [public_key_path, private_key_path].each do |f|
@@ -114,6 +114,12 @@ when "freebsd"
     its(:content) { should match(/^uchiwa_config="#{Regexp.escape(config)}"$/) }
     its(:content) { should match(/^uchiwa_logfile="#{Regexp.escape(log_file)}"$/) }
     its(:content) { should match(/^uchiwa_publicdir="#{Regexp.escape(public_dir)}"$/) }
+  end
+
+  describe file("/usr/local/etc/rc.d/uchiwa") do
+    it { should exist }
+    it { should be_file }
+    its(:content) { should match(/#{Regexp.escape(" 2>>${uchiwa_logfile_error}")}/) }
   end
 end
 

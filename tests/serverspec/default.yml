@@ -77,12 +77,12 @@
         host: 0.0.0.0
         port: 3000
         users:
-          - name: admin
+          - username: admin
             password: password
             # openssl rand -base64 40 |  tr -- '+=/' '-_~'
             accessToken: vFzX6rFDAn3G9ieuZ4ZhN-XrfdRow4Hd5CXXOUZ5NsTw4h3k3l4jAw__
             readonly: false
-          - name: guest
+          - username: guest
             password: password
             accessToken: hrKMW3uIt2RGxuMIoXQ-bVp-TL1MP4St5Hap3KAanMxI3OovFV48ww__
             readonly: true

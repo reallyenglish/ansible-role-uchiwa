@@ -1,0 +1,16 @@
+--- /usr/local/etc/rc.d/uchiwa.~1~	2017-08-12 19:23:35.000000000 +0000
++++ /usr/local/etc/rc.d/uchiwa	2017-09-06 08:05:04.167530000 +0000
+@@ -25,11 +25,12 @@
+ : ${uchiwa_publicdir="/usr/local/share/uchiwa/public/"}
+ : ${uchiwa_rundir="/var/run/uchiwa"}
+ : ${uchiwa_logfile="/var/log/uchiwa/uchiwa.log"}
++: ${uchiwa_logfile_error="/var/log/uchiwa/uchiwa_error.log"}
+ 
+ pidfile="${uchiwa_rundir}/${name}.pid"
+ 
+ command="/usr/sbin/daemon"
+-command_args="-P $pidfile -c /usr/local/bin/uchiwa -c ${uchiwa_config} -p ${uchiwa_publicdir} >> ${uchiwa_logfile}"
++command_args="-P $pidfile -c /usr/local/bin/uchiwa -c ${uchiwa_config} -p ${uchiwa_publicdir} >> ${uchiwa_logfile} 2>>${uchiwa_logfile_error}"
+ 
+ unset uchiwa_flags
+ start_precmd="install -d -o ${uchiwa_user} -g ${uchiwa_group} ${pidfile%/*}"

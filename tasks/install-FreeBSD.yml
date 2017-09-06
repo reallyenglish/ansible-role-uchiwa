@@ -4,3 +4,11 @@
   pkgng:
     name: uchiwa
     state: present
+
+- name: Patch rc.d/uchiwa
+  patch:
+    # XXX https://github.com/reallyenglish/ansible-role-uchiwa/issues/15
+    src: FreeBSD_rcd.patch
+    dest: /usr/local/etc/rc.d/uchiwa
+    backup: yes
+  notify: Restart uchiwa

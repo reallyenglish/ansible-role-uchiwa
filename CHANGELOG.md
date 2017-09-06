@@ -1,3 +1,7 @@
+## Release 1.2.1
+
+* e3a76c6 workaround a bug in rc.d/uchiwa, fixed #14, #15, and #17 (#16)
+
 ## Release 1.2.0
 
 * dc6354b [feature] support certfile and keyfile (#11)
